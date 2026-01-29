@@ -60,8 +60,16 @@ const promoSchema = new mongoose.Schema({
     buttonLink: String
 }, { timestamps: true });
 
+const gallerySchema = new mongoose.Schema({
+    url: { type: String, required: true },
+    title: { type: String, required: true },
+    location: { type: String, required: true },
+    category: { type: String, default: 'General' }
+}, { timestamps: true });
+
 const Category = mongoose.model('Category', categorySchema);
 const Promo = mongoose.model('Promo', promoSchema);
+const Gallery = mongoose.model('Gallery', gallerySchema);
 
 // ==================== API ROUTES ====================
 
@@ -171,6 +179,54 @@ app.put('/api/promo', async (req, res) => {
         res.json(promo);
     } catch (error) {
         console.error('Error updating promo:', error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// ==================== GALLERY ROUTES ====================
+
+// GET all gallery items
+app.get('/api/gallery', async (req, res) => {
+    try {
+        const items = await Gallery.find().sort({ createdAt: -1 }).lean();
+        res.json(items);
+    } catch (error) {
+        console.error('Error fetching gallery:', error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// POST add gallery item
+app.post('/api/gallery', async (req, res) => {
+    try {
+        const item = await Gallery.create(req.body);
+        res.status(201).json(item);
+    } catch (error) {
+        console.error('Error adding gallery item:', error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// POST bulk sync gallery
+app.post('/api/gallery/sync', async (req, res) => {
+    try {
+        const { items } = req.body;
+        await Gallery.deleteMany({});
+        const created = await Gallery.insertMany(items);
+        res.json({ success: true, count: created.length });
+    } catch (error) {
+        console.error('Error syncing gallery:', error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// DELETE gallery item
+app.delete('/api/gallery/:id', async (req, res) => {
+    try {
+        await Gallery.findByIdAndDelete(req.params.id);
+        res.json({ success: true });
+    } catch (error) {
+        console.error('Error deleting gallery item:', error);
         res.status(500).json({ error: error.message });
     }
 });
