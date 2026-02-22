@@ -47,6 +47,7 @@ const categorySchema = new mongoose.Schema({
         description: String,
         longDescription: String,
         image: String,
+        images: { type: [String], default: [] },
         specs: { type: mongoose.Schema.Types.Mixed, default: {} }
     }]
 }, { timestamps: true });
