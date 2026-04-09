@@ -40,16 +40,14 @@ const categorySchema = new mongoose.Schema({
     type: { type: String, enum: ['windows', 'doors'], required: true },
     title: { type: String, required: true },
     description: String,
+    longDescription: String,
     image: String,
-    products: [{
-        id: { type: String, required: true },
-        title: { type: String, required: true },
-        description: String,
-        longDescription: String,
-        image: String,
-        images: { type: [String], default: [] },
-        specs: { type: mongoose.Schema.Types.Mixed, default: {} }
-    }]
+    images: { type: [String], default: [] },
+    specs: { type: mongoose.Schema.Types.Mixed, default: {} },
+    // Editable content sections
+    attributes: { type: [{ label: String, desc: String }], default: [] },
+    features: { type: [{ title: String, description: String }], default: [] },
+    badges: { type: [String], default: [] }
 }, { timestamps: true });
 
 const promoSchema = new mongoose.Schema({

@@ -1,0 +1,20 @@
+# Dependencies
+node_modules/
+
+# Environment variables (Sensitive info!)
+.env
+.env.local
+.env.*
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS metadata
+.DS_Store
+Thumbs.db
+
+# Build folders (kung gagamit ka ng React/Next.js/Vite sa future)
+dist/
+build/
