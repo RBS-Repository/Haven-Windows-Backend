@@ -45,6 +45,8 @@ const categorySchema = new mongoose.Schema({
     images: { type: [String], default: [] },
     specs: { type: mongoose.Schema.Types.Mixed, default: {} },
     // Editable content sections
+    detailSubtitle: String,
+    detailTitle: String,
     attributes: { type: [{ label: String, desc: String }], default: [] },
     features: { type: [{ title: String, description: String }], default: [] },
     badges: { type: [String], default: [] }
